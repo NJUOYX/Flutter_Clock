@@ -3,6 +3,7 @@ import 'clock.dart';
 import 'stopwatch.dart';
 import 'alarm.dart';
 import 'simulationClock.dart';
+import 'world.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,6 +11,9 @@ void main() {
 
 var _stopWatchPage = new StopWatchPage();
 var _simulationPage = new SimulationPage();
+var _alarmCreatePage = new AlarmCreatePage();
+var _notifyPage = new NotifyPage();
+var _worldClockPage = new WorldCLockPage();
 const CLOCK_EVENT = "clockEvent";
 
 class MyApp extends StatelessWidget {
@@ -25,7 +29,8 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       routes: {
         "StopWatch": (context) => _stopWatchPage,
-        "Simulation": (context) => _simulationPage
+        "Simulation": (context) => _simulationPage,
+        "AlarmCreate": (context) => _alarmCreatePage,
       },
     );
   }
@@ -65,14 +70,14 @@ class _MyHomePageState extends State<MyHomePage>
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-        image: ExactAssetImage('assets/background.png'),
+        image: ExactAssetImage('assets/background.gif'),
         fit: BoxFit.cover,
       )),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text(
-            "时钟",
+            "",
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.transparent,
@@ -96,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage>
                       child: Container(
                         height: 100,
                         width: 300,
-                        child: Container()//NotifyPage(),
+                        child: _notifyPage,
                       ),
                     ),
                     Positioned(
@@ -120,7 +125,9 @@ class _MyHomePageState extends State<MyHomePage>
                           color: Colors.white10,
                           splashColor: Colors.white30,
                           shape: CircleBorder(),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, "AlarmCreate");
+                          },
                           child: Icon(
                             Icons.add,
                             color: Colors.white,
@@ -129,11 +136,10 @@ class _MyHomePageState extends State<MyHomePage>
                   ],
                 ),
               );
-            if (e == "秒表") return _stopWatchPage;
-            return Container(
-              alignment: Alignment.center,
-              child: Text(e, textScaleFactor: 5),
-            );
+            if (e == "秒表")
+              return _stopWatchPage;
+            else
+              return _worldClockPage; //todo
           }).toList(),
         ),
         drawer: _mainpage.getDrawer(),
